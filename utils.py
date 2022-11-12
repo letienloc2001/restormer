@@ -12,10 +12,9 @@ from torch.backends import cudnn
 from torch.utils.data import Dataset
 from torchvision.transforms import RandomCrop
 
-
 def parse_args():
     desc = 'Pytorch Implementation of \'Restormer: Efficient Transformer for High-Resolution Image Restoration\''
-    parser = argparse.ArgumentParser(description=desc)
+    parser = argparse.ArgumentParser(description=desc,  add_help=True)
     parser.add_argument('--data_path', type=str, default='/home/data')
     parser.add_argument('--data_name', type=str, default='rain100L', choices=['rain100L', 'rain100H'])
     parser.add_argument('--save_path', type=str, default='result')
