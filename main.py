@@ -121,7 +121,7 @@ def train(
     model = Restormer(num_blocks, num_heads, channels, num_refinement, expansion_factor).cuda()
     if model_file:
         model.load_state_dict(torch.load(model_file))
-        save_loop(model, test_loader, 1)
+        best_psnr, best_ssim = save_loop(model, test_loader, 1, results, best_psnr, best_ssim)
     else:
         optimizer = AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
         lr_scheduler = CosineAnnealingLR(optimizer, T_max=num_iter, eta_min=1e-6)
