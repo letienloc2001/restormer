@@ -54,48 +54,48 @@ def save_loop(net, data_loader, num_iter, model_file='', data_name='rain100L', r
 
 
 # if __name__ == '__main__':
-    args = parse_args()
-    test_dataset = RainDataset(args.data_path, args.data_name, 'test')
-    test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=args.workers)
+#     args = parse_args()
+#     test_dataset = RainDataset(args.data_path, args.data_name, 'test')
+#     test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=args.workers)
 
-    results, best_psnr, best_ssim = {'PSNR': [], 'SSIM': []}, 0.0, 0.0
-    model = Restormer(args.num_blocks, args.num_heads, args.channels, args.num_refinement, args.expansion_factor).cuda()
-    if args.model_file:
-        model.load_state_dict(torch.load(args.model_file))
-        save_loop(model, test_loader, 1)
-    else:
-        optimizer = AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
-        lr_scheduler = CosineAnnealingLR(optimizer, T_max=args.num_iter, eta_min=1e-6)
-        total_loss, total_num, results['Loss'], i = 0.0, 0, [], 0
-        train_bar = tqdm(range(1, args.num_iter + 1), initial=1, dynamic_ncols=True)
-        for n_iter in train_bar:
-            # progressive learning
-            if n_iter == 1 or n_iter - 1 in args.milestone:
-                end_iter = args.milestone[i] if i < len(args.milestone) else args.num_iter
-                start_iter = args.milestone[i - 1] if i > 0 else 0
-                length = args.batch_size[i] * (end_iter - start_iter)
-                train_dataset = RainDataset(args.data_path, args.data_name, 'train', args.patch_size[i], length)
-                train_loader = iter(DataLoader(train_dataset, args.batch_size[i], True, num_workers=args.workers))
-                i += 1
-            # train
-            model.train()
-            rain, norain, name, h, w = next(train_loader)
-            rain, norain = rain.cuda(), norain.cuda()
-            out = model(rain)
-            loss = F.l1_loss(out, norain)
+#     results, best_psnr, best_ssim = {'PSNR': [], 'SSIM': []}, 0.0, 0.0
+#     model = Restormer(args.num_blocks, args.num_heads, args.channels, args.num_refinement, args.expansion_factor).cuda()
+#     if args.model_file:
+#         model.load_state_dict(torch.load(args.model_file))
+#         save_loop(model, test_loader, 1)
+#     else:
+#         optimizer = AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
+#         lr_scheduler = CosineAnnealingLR(optimizer, T_max=args.num_iter, eta_min=1e-6)
+#         total_loss, total_num, results['Loss'], i = 0.0, 0, [], 0
+#         train_bar = tqdm(range(1, args.num_iter + 1), initial=1, dynamic_ncols=True)
+#         for n_iter in train_bar:
+#             # progressive learning
+#             if n_iter == 1 or n_iter - 1 in args.milestone:
+#                 end_iter = args.milestone[i] if i < len(args.milestone) else args.num_iter
+#                 start_iter = args.milestone[i - 1] if i > 0 else 0
+#                 length = args.batch_size[i] * (end_iter - start_iter)
+#                 train_dataset = RainDataset(args.data_path, args.data_name, 'train', args.patch_size[i], length)
+#                 train_loader = iter(DataLoader(train_dataset, args.batch_size[i], True, num_workers=args.workers))
+#                 i += 1
+#             # train
+#             model.train()
+#             rain, norain, name, h, w = next(train_loader)
+#             rain, norain = rain.cuda(), norain.cuda()
+#             out = model(rain)
+#             loss = F.l1_loss(out, norain)
 
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            total_num += rain.size(0)
-            total_loss += loss.item() * rain.size(0)
-            train_bar.set_description('Train Iter: [{}/{}] Loss: {:.3f}'
-                                      .format(n_iter, args.num_iter, total_loss / total_num))
+#             optimizer.zero_grad()
+#             loss.backward()
+#             optimizer.step()
+#             total_num += rain.size(0)
+#             total_loss += loss.item() * rain.size(0)
+#             train_bar.set_description('Train Iter: [{}/{}] Loss: {:.3f}'
+#                                       .format(n_iter, args.num_iter, total_loss / total_num))
 
-            lr_scheduler.step()
-            if n_iter % 100 == 0: #1000
-                results['Loss'].append('{:.3f}'.format(total_loss / total_num))
-                save_loop(model, test_loader, n_iter)
+#             lr_scheduler.step()
+#             if n_iter % 100 == 0: #1000
+#                 results['Loss'].append('{:.3f}'.format(total_loss / total_num))
+#                 save_loop(model, test_loader, n_iter)
 
 
 def train(
