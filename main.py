@@ -38,8 +38,7 @@ def test_loop(net, data_loader, num_iter, model_file='', result_path="result", d
     return total_psnr / count, total_ssim / count
 
 
-def save_loop(net, data_loader, num_iter, results, model_file='', data_name='rain100L', result_path='result'):
-    global best_psnr, best_ssim
+def save_loop(net, data_loader, num_iter, results, best_psnr, best_ssim, model_file='', data_name='rain100L', result_path='result'):
     val_psnr, val_ssim = test_loop(net, data_loader, num_iter, model_file=model_file, data_name=data_name, result_path=result_path)
     results['PSNR'].append('{:.2f}'.format(val_psnr))
     results['SSIM'].append('{:.3f}'.format(val_ssim))
@@ -50,7 +49,8 @@ def save_loop(net, data_loader, num_iter, results, model_file='', data_name='rai
         best_psnr, best_ssim = val_psnr, val_ssim
         with open('{}/{}.txt'.format(result_path, data_name), 'w') as f:
             f.write('Iter: {} PSNR:{:.2f} SSIM:{:.3f}'.format(num_iter, best_psnr, best_ssim))
-        torch.save(model.state_dict(), '{}/{}.pth'.format(result_path, data_name))
+        torch.save(net.state_dict(), '{}/{}.pth'.format(result_path, data_name))
+    return best_psnr, best_ssim
 
 
 # if __name__ == '__main__':
@@ -154,5 +154,5 @@ def train(
             lr_scheduler.step()
             if n_iter % 10 == 0: #1000
                 results['Loss'].append('{:.3f}'.format(total_loss / total_num))
-                save_loop(model, test_loader, n_iter, results=results)
+                best_psnr, best_ssim = save_loop(model, test_loader, n_iter, results, best_psnr, best_ssim)
 
