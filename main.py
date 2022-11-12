@@ -100,11 +100,11 @@ if __name__ == '__main__':
 
 def run(
         data_path, 
-        data_name,
-        lr,
-        num_iter,
-        batch_size,
-        patch_size,
+        data_name='rain100L',
+        lr=0.0003,
+        num_iter=300000,
+        batch_size=(64, 40, 32, 16, 8, 8),
+        patch_size=(128, 160, 192, 256, 320, 384),
         milestone=(92000, 156000, 204000, 240000, 276000),
         weight_decay=1e-4,
         model_file="",
