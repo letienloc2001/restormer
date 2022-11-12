@@ -152,7 +152,7 @@ def train(
                                       .format(n_iter, num_iter, total_loss / total_num))
 
             lr_scheduler.step()
-            if n_iter % 100 == 0: #1000
+            if n_iter % 10 == 0: #1000
                 results['Loss'].append('{:.3f}'.format(total_loss / total_num))
                 save_loop(model, test_loader, n_iter)
 
