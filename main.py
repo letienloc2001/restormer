@@ -29,6 +29,7 @@ def test_loop(net, data_loader, num_iter, model_file='', save_path="result", dat
             total_psnr += current_psnr.item()
             total_ssim += current_ssim.item()
             count += 1
+            print(save_path, data_name, name[0])
             save_path = '{}/{}/{}'.format(save_path, data_name, name[0])
             if not os.path.exists(os.path.dirname(save_path)):
                 os.makedirs(os.path.dirname(save_path))
@@ -41,7 +42,7 @@ def test_loop(net, data_loader, num_iter, model_file='', save_path="result", dat
 
 def save_loop(net, data_loader, num_iter, model_file='', data_name='rain100L', save_path='result'):
     global best_psnr, best_ssim
-    val_psnr, val_ssim = test_loop(net, data_loader, num_iter, model_file=model_file, data_name=data_name)
+    val_psnr, val_ssim = test_loop(net, data_loader, num_iter, model_file=model_file, data_name=data_name, save_path=save_path)
     results['PSNR'].append('{:.2f}'.format(val_psnr))
     results['SSIM'].append('{:.3f}'.format(val_ssim))
     # save statistics
