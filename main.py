@@ -54,7 +54,7 @@ def save_loop(net, data_loader, num_iter, model_file='', data_name='rain100L', s
         torch.save(model.state_dict(), '{}/{}.pth'.format(save_path, data_name))
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     args = parse_args()
     test_dataset = RainDataset(args.data_path, args.data_name, 'test')
     test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=args.workers)
