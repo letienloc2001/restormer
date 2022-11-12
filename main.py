@@ -38,7 +38,7 @@ def test_loop(net, data_loader, num_iter, model_file='', result_path="result", d
     return total_psnr / count, total_ssim / count
 
 
-def save_loop(net, data_loader, num_iter, model_file='', data_name='rain100L', result_path='result'):
+def save_loop(net, data_loader, num_iter, results, model_file='', data_name='rain100L', result_path='result'):
     global best_psnr, best_ssim
     val_psnr, val_ssim = test_loop(net, data_loader, num_iter, model_file=model_file, data_name=data_name, result_path=result_path)
     results['PSNR'].append('{:.2f}'.format(val_psnr))
@@ -154,5 +154,5 @@ def train(
             lr_scheduler.step()
             if n_iter % 10 == 0: #1000
                 results['Loss'].append('{:.3f}'.format(total_loss / total_num))
-                save_loop(model, test_loader, n_iter)
+                save_loop(model, test_loader, n_iter, results=results)
 
