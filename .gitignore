@@ -8,3 +8,4 @@
 *.npy
 .DS_Store
 *.zip
+test.py

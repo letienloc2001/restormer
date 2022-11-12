@@ -40,7 +40,7 @@ def test_loop(net, data_loader, num_iter, model_file='', save_path="result", dat
 
 def save_loop(net, data_loader, num_iter, model_file='', data_name='rain100L', save_path='result'):
     global best_psnr, best_ssim
-    val_psnr, val_ssim = test_loop(net, data_loader, num_iter, model_file=model_file, data_name=data_name, model=model)
+    val_psnr, val_ssim = test_loop(net, data_loader, num_iter, model_file=model_file, data_name=data_name)
     results['PSNR'].append('{:.2f}'.format(val_psnr))
     results['SSIM'].append('{:.3f}'.format(val_ssim))
     # save statistics
@@ -155,3 +155,4 @@ def train(
             if n_iter % 1000 == 0:
                 results['Loss'].append('{:.3f}'.format(total_loss / total_num))
                 save_loop(model, test_loader, n_iter)
+
