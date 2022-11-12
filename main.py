@@ -94,7 +94,7 @@ if __name__ == '__main__':
                                       .format(n_iter, args.num_iter, total_loss / total_num))
 
             lr_scheduler.step()
-            if n_iter % 1000 == 0:
+            if n_iter % 100 == 0:
                 results['Loss'].append('{:.3f}'.format(total_loss / total_num))
                 save_loop(model, test_loader, n_iter)
 
