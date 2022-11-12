@@ -20,7 +20,7 @@ def test_loop(net, data_loader, num_iter, model_file='', save_path="result", dat
         test_bar = tqdm(data_loader, initial=1, dynamic_ncols=True)
         for rain, norain, name, h, w in test_bar:
             rain, norain = rain.cuda(), norain.cuda()
-            out = torch.clamp((torch.clamp(model(rain)[:, :, :h, :w], 0, 1).mul(255)), 0, 255).byte()
+            out = torch.clamp((torch.clamp(net(rain)[:, :, :h, :w], 0, 1).mul(255)), 0, 255).byte()
             norain = torch.clamp(norain[:, :, :h, :w].mul(255), 0, 255).byte()
             # computer the metrics with Y channel and double precision
             y, gt = rgb_to_y(out.double()), rgb_to_y(norain.double())
@@ -40,7 +40,7 @@ def test_loop(net, data_loader, num_iter, model_file='', save_path="result", dat
 
 def save_loop(net, data_loader, num_iter, model_file='', data_name='rain100L', save_path='result'):
     global best_psnr, best_ssim
-    val_psnr, val_ssim = test_loop(net, data_loader, num_iter, model_file=model_file, data_name=data_name)
+    val_psnr, val_ssim = test_loop(net, data_loader, num_iter, model_file=model_file, data_name=data_name, model=model)
     results['PSNR'].append('{:.2f}'.format(val_psnr))
     results['SSIM'].append('{:.3f}'.format(val_ssim))
     # save statistics
