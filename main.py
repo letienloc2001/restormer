@@ -50,6 +50,7 @@ def save_loop(net, data_loader, num_iter, results, best_psnr, best_ssim, model_f
         with open('{}/{}.txt'.format(result_path, data_name), 'w') as f:
             f.write('Iter: {} PSNR:{:.2f} SSIM:{:.3f}'.format(num_iter, best_psnr, best_ssim))
         torch.save(net.state_dict(), '{}/{}.pth'.format(result_path, data_name))
+    print(best_psnr, best_ssim)
     return best_psnr, best_ssim
 
 
