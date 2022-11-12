@@ -7,4 +7,4 @@
 *.mat
 *.npy
 .DS_Store
-
+*.zip
