@@ -98,7 +98,7 @@ if __name__ == '__main__':
                 save_loop(model, test_loader, n_iter)
 
 
-def run(
+def train(
         data_path, 
         data_name='rain100L',
         lr=0.0003,
