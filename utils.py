@@ -89,8 +89,8 @@ class RainDataset(Dataset):
     def __init__(self, data_path, data_name, data_type, patch_size=None, length=None):
         super().__init__()
         self.data_name, self.data_type, self.patch_size = data_name, data_type, patch_size
-        self.rain_images = sorted(glob.glob('{}/{}/{}/rain/*.png'.format(data_path, data_name, data_type)))
-        self.norain_images = sorted(glob.glob('{}/{}/{}/norain/*.png'.format(data_path, data_name, data_type)))
+        self.rain_images = sorted(glob.glob('{}/{}/{}/input/*.png'.format(data_path, data_name, data_type)))
+        self.norain_images = sorted(glob.glob('{}/{}/{}/target/*.png'.format(data_path, data_name, data_type)))
         # make sure the length of training and testing different
         self.num = len(self.rain_images)
         self.sample_num = length if data_type == 'train' else self.num
