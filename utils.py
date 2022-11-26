@@ -100,8 +100,8 @@ class RainDataset(Dataset):
 
     def __getitem__(self, idx):
         image_name = os.path.basename(self.rain_images[idx % self.num])
-        rain = T.to_tensor(Image.open(self.rain_images[idx % self.num]))
-        norain = T.to_tensor(Image.open(self.norain_images[idx % self.num]))
+        rain = T.to_tensor(Image.open(self.rain_images[idx % self.num]).convert('RGB'))
+        norain = T.to_tensor(Image.open(self.norain_images[idx % self.num]).convert('RGB'))
         h, w = rain.shape[1:]
 
         if self.data_type == 'train':
